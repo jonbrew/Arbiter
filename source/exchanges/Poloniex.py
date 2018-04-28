@@ -15,8 +15,8 @@ class Poloniex(Exchange):
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/public?command=returnTicker')
-		if ticker.status_code is 200 :
-			ticker = ticker.json() 
+		if ticker.status_code is Const.SC_OK :
+			ticker = ticker.json()
 		else :
 			print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
 			return

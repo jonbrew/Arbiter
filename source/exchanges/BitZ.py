@@ -16,8 +16,8 @@ class BitZ(Exchange):
 	def update_prices(self):
 		headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 		ticker = requests.get(self.api_base+'/api_v1/tickerall', headers=headers)
-		if ticker.status_code is 200 :
-			ticker = ticker.json() 
+		if ticker.status_code is Const.SC_OK :
+			ticker = ticker.json()
 		else :
 			print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
 			return

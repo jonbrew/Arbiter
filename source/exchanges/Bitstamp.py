@@ -13,8 +13,8 @@ class Bitstamp(Exchange):
 	def update_prices(self):
 		for c in self.get_coins() :
 			ticker = requests.get(self.api_base+'/api/v2/ticker/'+c.lower()+Const.BTC.lower())
-			if ticker.status_code is 200 :
-				ticker = ticker.json() 
+			if ticker.status_code is Const.SC_OK :
+				ticker = ticker.json()
 			else :
 				print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
 				return

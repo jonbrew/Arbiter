@@ -2,9 +2,6 @@
 
 SOURCES := source/*.py source/exchanges/*.py
 
-.pylintrc:
-	pylint --disable=locally-disabled --reports=no --generate-rcfile > $@
-
 check: $(SOURCES) .pylintrc
 	-pylint --disable=R,C $(SOURCES)
 

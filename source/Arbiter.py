@@ -5,7 +5,8 @@ from threading import Thread
 class Arbiter():
 
 	def __init__(self):
-		self.exchanges = [Binance(), BitZ(), Bitfinex(), Bitstamp(), Bittrex(), Poloniex()]
+		self.exchanges = [Binance(), BitZ(), Bitfinex(), Bitstamp(), Bittrex(), 
+						  CexIO(), GDAX(), HitBTC(), Huobi(), Poloniex()]
 		print(Const.HEADER+'Building thread pool...'+Const.ENDC)
 		thread_pool = [Thread(target=e.update_prices,name=e.name) for e in self.exchanges]
 		print(Const.HEADER+'Getting exchange price data...'+Const.ENDC)
@@ -28,8 +29,8 @@ class Arbiter():
 			for e in self.exchanges :
 				if c in e.prices :
 					self.price_table[c][e.name] = e.prices[c]
-	
-	def calculate(self,verbose):
+
+	def calculate(self, verbose):
 		print(Const.HEADER+'Calculating arbitrage opportunities...'+Const.ENDC)
 		buy_exchange = None
 		sell_exchange = None
@@ -39,7 +40,7 @@ class Arbiter():
 			supported_exchanges = [e for e in self.exchanges if c in e.prices and e.prices[c] is not None]
 			if len(supported_exchanges) is 0 :
 				continue
-			spreads = sorted(supported_exchanges, key=lambda e: e.prices[c],reverse=True)
+			spreads = sorted(supported_exchanges, key=lambda e,c1=c: e.prices[c1], reverse=True)
 			low = spreads[-1].prices[c]
 			high = spreads[0].prices[c]
 			diff = ((high-low)/low)*100
