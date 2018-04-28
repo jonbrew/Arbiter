@@ -5,14 +5,23 @@ import requests
 class Binance(Exchange):
 
 	def __init__(self):
-		super().__init__('Binance', 'https://poloniex.com')
-		ticker = requests.get(self.api_base+'/public?command=returnTicker').json()
-		supported = [Const.BTC, Const.ETH, Const.STR, Const.BCH, Const.XRP, Const.ETC, 
-					Const.LTC, Const.XMR, Const.NXT, Const.ZEC, Const.DASH, Const.REP]
+		super().__init__('Binance', 'https://api.binance.com')
+		supported = [Const.ETH, Const.XRP, Const.ETC, Const.LTC, Const.XMR, 
+					 Const.ZEC, Const.DASH, Const.GNT, Const.OMG, Const.XEM, 
+					 Const.TRX, Const.EOS, Const.ICX, Const.XVG, Const.XLM, 
+					 Const.ADA, Const.VEN, Const.QTUM, Const.BTG, Const.LSK, 
+					 Const.STEEM, Const.BTS]
 		for c in supported :
-			self.prices[c] = ticker[Const.USDT+'_'+c]['highestBid']
+			self.prices[c] = None
 
 	def update_prices(self):
-		ticker = requests.get(self.api_base+'/public?command=returnTicker').json()
-		for c in self.get_currencies() :
-			self.prices[c] = ticker[Const.USDT+'_'+c]['highestBid']
+		ticker = requests.get(self.api_base+'/api/v3/ticker/price')
+		if ticker.status_code is 200 :
+			ticker = ticker.json() 
+		else :
+			print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
+			return
+		for c in self.get_coins() :
+			for i in ticker :
+				if i['symbol'] == c+Const.BTC:
+					self.prices[c] = float(i['price'])
