@@ -25,3 +25,4 @@ class Binance(Exchange):
 			for i in ticker :
 				if i['symbol'] == c+Const.BTC:
 					self.prices[c] = float(i['price'])
+					break

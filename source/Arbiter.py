@@ -5,8 +5,10 @@ from threading import Thread
 class Arbiter():
 
 	def __init__(self):
-		self.exchanges = [Binance(), BitZ(), Bitfinex(), Bitstamp(), Poloniex()]
-		thread_pool = [Thread(target=e.update_prices(),name=e.name) for e in self.exchanges]
+		self.exchanges = [Binance(), BitZ(), Bitfinex(), Bitstamp(), Bittrex(), Poloniex()]
+		print(Const.HEADER+'Building thread pool...'+Const.ENDC)
+		thread_pool = [Thread(target=e.update_prices,name=e.name) for e in self.exchanges]
+		print(Const.HEADER+'Getting exchange price data...'+Const.ENDC)
 		for t in thread_pool :
 			t.start()
 		for t in thread_pool :
@@ -28,6 +30,7 @@ class Arbiter():
 					self.price_table[c][e.name] = e.prices[c]
 	
 	def calculate(self,verbose):
+		print(Const.HEADER+'Calculating arbitrage opportunities...'+Const.ENDC)
 		buy_exchange = None
 		sell_exchange = None
 		coin = None
@@ -62,4 +65,4 @@ class Arbiter():
 			pct = "{0:.2f}".format(percent)
 			print('Buy '+coin+' from '+buy_exchange.name+' at '+str(buy_exchange.prices[coin])+
 				   '. Sell to '+sell_exchange.name+' at '+str(sell_exchange.prices[coin])+' for '+Const.OK+pct+'%'+Const.ENDC)
-
+			print()
