@@ -30,6 +30,9 @@ VEN		= 'VEN'
 BTG		= 'BTG'
 LSK		= 'LSK'
 SC		= 'SC'
+COINS = [STEEM, DOGE, DASH, QTUM, ETH, BCH, XRP, ETC, LTC, XMR, NXT, ZEC, 
+		 BTS, REP, DGB, GNT, OMG, XEM, TRX, EOS, ICX, XVG, XLM, ADA, VEN, 
+		 BTG, LSK, SC]
 # Console Colors
 HEADER = '\033[95m'
 OK = '\033[92m'

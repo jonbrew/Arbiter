@@ -5,26 +5,20 @@ from threading import Thread
 class Arbiter():
 
 	def __init__(self):
+		#self.exchanges = [Binance(), BitZ(), Bitfinex(), Bitstamp(), Bittrex(), 
+		#				  CexIO(), GDAX(), HitBTC(), Poloniex()]
 		self.exchanges = [Binance(), BitZ(), Bitfinex(), Bitstamp(), Bittrex(), 
-						  CexIO(), GDAX(), HitBTC(), Huobi(), Poloniex()]
+						  CexIO(), GDAX(), HitBTC(), Poloniex()]
 		print(Const.HEADER+'Building thread pool...'+Const.ENDC)
-		thread_pool = [Thread(target=e.update_prices,name=e.name) for e in self.exchanges]
+		thread_pool = [Thread(target=e.update,name=e.name) for e in self.exchanges]
 		print(Const.HEADER+'Getting exchange price data...'+Const.ENDC)
 		for t in thread_pool :
 			t.start()
 		for t in thread_pool :
 			t.join()
 
-		self.coins = [Const.ETH, Const.BCH, Const.XRP, Const.ETC, 
-					  Const.LTC, Const.XMR, Const.NXT, Const.ZEC, 
-					  Const.DASH, Const.REP, Const.SC, Const.DGB, 
-					  Const.GNT, Const.DOGE, Const.OMG, Const.XEM, 
-					  Const.TRX, Const.EOS, Const.ICX, Const.XVG, 
-					  Const.XLM, Const.ADA, Const.VEN, Const.QTUM, 
-					  Const.BTG, Const.LSK, Const.STEEM, Const.BTS]
-
 		self.price_table = {}
-		for c in self.coins :
+		for c in Const.COINS :
 			self.price_table[c] = {}
 			for e in self.exchanges :
 				if c in e.prices :
@@ -36,7 +30,7 @@ class Arbiter():
 		sell_exchange = None
 		coin = None
 		percent = -1
-		for c in self.price_table.keys() :
+		for c in Const.COINS :
 			supported_exchanges = [e for e in self.exchanges if c in e.prices and e.prices[c] is not None]
 			if len(supported_exchanges) is 0 :
 				continue

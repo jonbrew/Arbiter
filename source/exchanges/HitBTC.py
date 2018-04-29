@@ -6,14 +6,24 @@ class HitBTC(Exchange):
 
 	def __init__(self):
 		super().__init__('HitBTC', 'https://api.hitbtc.com')
-		supported = [Const.STEEM, Const.DOGE, Const.DASH, Const.QTUM, 
-					 Const.ETH, Const.BCH, Const.XRP, Const.ETC, Const.LTC, 
-					 Const.XMR, Const.NXT, Const.ZEC, Const.REP, Const.DGB, 
-					 Const.GNT, Const.OMG, Const.XEM, Const.TRX, Const.EOS, 
-					 Const.ICX, Const.XVG, Const.XLM, Const.ADA, Const.VEN, 
-					 Const.BTG, Const.LSK, Const.SC]
-		for c in supported :
-			self.prices[c] = None
+		self.prices = {}
+
+	def build(self):
+		self.update_coins()
+		self.update_prices()
+
+	def update_coins(self):
+		self.prices.clear()
+		coins = requests.get(self.api_base+'/api/2/public/currency')
+		if coins.status_code is Const.SC_OK :
+			coins = coins.json()
+		else :
+			print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
+			return
+		for supported in Const.COINS :
+			for c in coins :
+				if c['id'] == supported and c['payoutEnabled'] and c['payinEnabled']:
+					self.prices[supported] = None
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api/2/public/ticker')

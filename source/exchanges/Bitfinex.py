@@ -6,11 +6,20 @@ class Bitfinex(Exchange):
 
 	def __init__(self):
 		super().__init__('Bitfinex', 'https://api.bitfinex.com')
-		supported = [Const.ETH, Const.BCH, Const.XRP, Const.ETC, Const.LTC, 
-					 Const.XMR, Const.ZEC, Const.REP, Const.GNT, Const.OMG, 
-					 Const.TRX, Const.EOS, Const.BTG]
-		for c in supported :
-			self.prices[c] = None
+		self.prices = {}
+
+	def update_coins(self):
+		self.prices.clear()
+		coins = requests.get(self.api_base+'/v1/symbols')
+		if coins.status_code is Const.SC_OK :
+			coins = coins.json()
+		else :
+			print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
+			return
+		for supported in Const.COINS :
+			for c in coins :
+				if c == supported.lower()+Const.BTC.lower():
+					self.prices[supported] = None
 
 	def update_prices(self):
 		for c in self.get_coins() :

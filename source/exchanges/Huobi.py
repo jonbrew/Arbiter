@@ -6,13 +6,11 @@ class Huobi(Exchange):
 
 	def __init__(self):
 		super().__init__('Huobi', 'https://api.huobipro.com')
-		supported = [Const.STEEM, Const.DASH, Const.QTUM, Const.ETH, 
-					 Const.BCH, Const.XRP, Const.ETC, Const.LTC, Const.ZEC, 
-					 Const.BTS, Const.GNT, Const.OMG, Const.XEM, Const.TRX, 
-					 Const.EOS, Const.ICX, Const.ADA, Const.VEN, Const.BTG, 
-					 Const.LSK]
-		for c in supported :
-			self.prices[c] = None
+		self.prices = {}
+
+	def update_coins(self):
+		# TODO (This exchange postponed because it is not available in US)
+		pass
 
 	def update_prices(self):
 		for c in self.get_coins() :

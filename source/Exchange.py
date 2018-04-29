@@ -10,6 +10,14 @@ class Exchange(ABC):
 	def get_coins(self):
 		return list(self.prices.keys())
 
+	def update(self):
+		self.update_coins()
+		self.update_prices()
+
+	@abstractmethod
+	def update_coins(self):
+		pass
+
 	@abstractmethod
 	def update_prices(self):
 		pass

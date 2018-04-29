@@ -6,13 +6,20 @@ class Binance(Exchange):
 
 	def __init__(self):
 		super().__init__('Binance', 'https://api.binance.com')
-		supported = [Const.ETH, Const.XRP, Const.ETC, Const.LTC, Const.XMR, 
-					 Const.ZEC, Const.DASH, Const.GNT, Const.OMG, Const.XEM, 
-					 Const.TRX, Const.EOS, Const.ICX, Const.XVG, Const.XLM, 
-					 Const.ADA, Const.VEN, Const.QTUM, Const.BTG, Const.LSK, 
-					 Const.STEEM, Const.BTS]
-		for c in supported :
-			self.prices[c] = None
+		self.prices = {}
+
+	def update_coins(self):
+		self.prices.clear()
+		coins = requests.get(self.api_base+'/api/v1/exchangeInfo')
+		if coins.status_code is Const.SC_OK :
+			coins = coins.json()
+		else :
+			print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
+			return
+		for supported in Const.COINS :
+			for c in coins['symbols'] :
+				if c['symbol'] == supported+Const.BTC and c['status'] == 'TRADING' :
+					self.prices[supported] = None
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api/v3/ticker/price')

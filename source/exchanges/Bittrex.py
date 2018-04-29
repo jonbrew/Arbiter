@@ -6,15 +6,20 @@ class Bittrex(Exchange):
 
 	def __init__(self):
 		super().__init__('Bittrex', 'https://bittrex.com')
-		supported = [Const.STEEM, Const.DOGE, Const.DASH, 
-					 Const.QTUM, Const.ETH, Const.XRP, Const.ETC, 
-					 Const.LTC, Const.XMR, Const.NXT, Const.ZEC, 
-					 Const.REP, Const.DGB, Const.GNT, Const.OMG, 
-					 Const.XEM, Const.TRX, Const.XVG, Const.XLM, 
-					 Const.ADA, Const.VEN, Const.BTG, Const.LSK, 
-					 Const.SC]
-		for c in supported :
-			self.prices[c] = None
+		self.prices = {}
+
+	def update_coins(self):
+		self.prices.clear()
+		coins = requests.get(self.api_base+'/api/v1.1/public/getcurrencies')
+		if coins.status_code is Const.SC_OK :
+			coins = coins.json()
+		else :
+			print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
+			return
+		for supported in Const.COINS :
+			for c in coins['result'] :
+				if c['Currency'] == supported and c['IsActive'] :
+					self.prices[supported] = None
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api/v1.1/public/getmarketsummaries')

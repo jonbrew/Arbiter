@@ -6,16 +6,23 @@ class BitZ(Exchange):
 
 	def __init__(self):
 		super().__init__('BitZ', 'https://www.bit-z.com')
-		supported = [Const.ETH, Const.BCH, Const.ETC, Const.LTC, 
-					 Const.ZEC, Const.DASH, Const.DGB, Const.DOGE, 
-					 Const.OMG, Const.TRX, Const.EOS, Const.QTUM, 
-					 Const.BTG, Const.LSK]
-		for c in supported :
-			self.prices[c] = None
+		self.prices = {}
+		self.headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+
+	def update_coins(self):
+		self.prices.clear()
+		coins = requests.get(self.api_base+'/api_v1/tickerall', headers=self.headers)
+		if coins.status_code is Const.SC_OK :
+			coins = coins.json()
+		else :
+			print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
+			return
+		for supported in Const.COINS :
+			if supported.lower()+'_'+Const.BTC.lower() in coins['data'] :
+				self.prices[supported] = None
 
 	def update_prices(self):
-		headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
-		ticker = requests.get(self.api_base+'/api_v1/tickerall', headers=headers)
+		ticker = requests.get(self.api_base+'/api_v1/tickerall', headers=self.headers)
 		if ticker.status_code is Const.SC_OK :
 			ticker = ticker.json()
 		else :
