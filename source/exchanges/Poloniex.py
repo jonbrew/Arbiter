@@ -18,7 +18,7 @@ class Poloniex(Exchange):
 			return
 		for supported in Const.COINS :
 			if supported in coins and coins[supported]['disabled'] == 0 :
-				self.prices[supported] = None
+				self.prices[supported] = {}
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/public?command=returnTicker')
@@ -28,4 +28,6 @@ class Poloniex(Exchange):
 			print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
 			return
 		for c in self.get_coins() :
-			self.prices[c] = float(ticker[Const.BTC+'_'+c]['highestBid'])
+			self.prices[c]['bid'] = float(ticker[Const.BTC+'_'+c]['highestBid'])
+			self.prices[c]['ask'] = float(ticker[Const.BTC+'_'+c]['lowestAsk'])
+			self.prices[c]['last'] = float(ticker[Const.BTC+'_'+c]['last'])

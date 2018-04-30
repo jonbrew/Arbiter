@@ -2,6 +2,7 @@ import Const
 from Exchange import Exchange
 import requests
 
+# Removed due to bad API and no withdraw endpoint
 class BitZ(Exchange):
 
 	def __init__(self):
@@ -19,7 +20,9 @@ class BitZ(Exchange):
 			return
 		for supported in Const.COINS :
 			if supported.lower()+'_'+Const.BTC.lower() in coins['data'] :
-				self.prices[supported] = None
+				self.prices[supported] = {}
+		# Manually remove deposit/withdraw paused coins (cause their API sucks)
+		self.prices.pop(Const.BTG)
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api_v1/tickerall', headers=self.headers)

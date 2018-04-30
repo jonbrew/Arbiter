@@ -19,7 +19,7 @@ class Bitstamp(Exchange):
 		for supported in Const.COINS :
 			for c in coins :
 				if c['name'] == supported+'/'+Const.BTC and c['trading'] == 'Enabled':
-					self.prices[supported] = None
+					self.prices[supported] = {}
 
 	def update_prices(self):
 		for c in self.get_coins() :
@@ -29,4 +29,6 @@ class Bitstamp(Exchange):
 			else :
 				print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
 				return
-			self.prices[c] = float(ticker['last'])
+			self.prices[c]['bid'] = float(ticker['bid'])
+			self.prices[c]['ask'] = float(ticker['ask'])
+			self.prices[c]['last'] = float(ticker['last'])

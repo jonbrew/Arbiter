@@ -19,7 +19,7 @@ class CexIO(Exchange):
 		for supported in Const.COINS :
 			for c in coins['data'] :
 				if c['pair'] == supported+':'+Const.BTC :
-					self.prices[supported] = None
+					self.prices[supported] = {}
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api/tickers/BTC')
@@ -31,5 +31,7 @@ class CexIO(Exchange):
 		for c in self.get_coins() :
 			for d in ticker['data'] :
 				if d['pair'] == c+':'+Const.BTC :
-					self.prices[c] = float(d['last'])
+					self.prices[c]['bid'] = float(d['bid'])
+					self.prices[c]['ask'] = float(d['ask'])
+					self.prices[c]['last'] = float(d['last'])
 					break

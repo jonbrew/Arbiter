@@ -23,7 +23,7 @@ class HitBTC(Exchange):
 		for supported in Const.COINS :
 			for c in coins :
 				if c['id'] == supported and c['payoutEnabled'] and c['payinEnabled']:
-					self.prices[supported] = None
+					self.prices[supported] = {}
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api/2/public/ticker')
@@ -35,5 +35,7 @@ class HitBTC(Exchange):
 		for c in self.get_coins() :
 			for i in ticker :
 				if i['symbol'] == c+Const.BTC:
-					self.prices[c] = float(i['last'])
+					self.prices[c]['bid'] = float(i['bid'])
+					self.prices[c]['ask'] = float(i['ask'])
+					self.prices[c]['last'] = float(i['last'])
 					break

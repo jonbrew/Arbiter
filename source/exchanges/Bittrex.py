@@ -19,7 +19,7 @@ class Bittrex(Exchange):
 		for supported in Const.COINS :
 			for c in coins['result'] :
 				if c['Currency'] == supported and c['IsActive'] :
-					self.prices[supported] = None
+					self.prices[supported] = {}
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api/v1.1/public/getmarketsummaries')
@@ -31,5 +31,7 @@ class Bittrex(Exchange):
 		for c in self.get_coins() :
 			for r in ticker['result'] :
 				if r['MarketName'] == Const.BTC+'-'+c :
-					self.prices[c] = float(r['Last'])
+					self.prices[c]['bid'] = float(r['Bid'])
+					self.prices[c]['ask'] = float(r['Ask'])
+					self.prices[c]['last'] = float(r['Last'])
 					break

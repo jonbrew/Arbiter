@@ -19,10 +19,10 @@ class Binance(Exchange):
 		for supported in Const.COINS :
 			for c in coins['symbols'] :
 				if c['symbol'] == supported+Const.BTC and c['status'] == 'TRADING' :
-					self.prices[supported] = None
+					self.prices[supported] = {}
 
 	def update_prices(self):
-		ticker = requests.get(self.api_base+'/api/v3/ticker/price')
+		ticker = requests.get(self.api_base+'/api/v3/ticker/bookTicker')
 		if ticker.status_code is Const.SC_OK :
 			ticker = ticker.json()
 		else :
@@ -31,5 +31,9 @@ class Binance(Exchange):
 		for c in self.get_coins() :
 			for i in ticker :
 				if i['symbol'] == c+Const.BTC:
-					self.prices[c] = float(i['price'])
+					self.prices[c]['bid'] = float(i['bidPrice'])
+					self.prices[c]['ask'] = float(i['askPrice'])
+					self.prices[c]['last'] = float(i['bidPrice'])
 					break
+
+	#NOTE: withdrawal has seperate api doc

@@ -19,7 +19,7 @@ class GDAX(Exchange):
 		for supported in Const.COINS :
 			for c in coins :
 				if c['id'] == supported+'-'+Const.BTC and c['status'] == 'online' :
-					self.prices[supported] = None
+					self.prices[supported] = {}
 	
 	def update_prices(self):
 		for c in self.get_coins() :
@@ -29,4 +29,6 @@ class GDAX(Exchange):
 			else :
 				print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
 				return
-			self.prices[c] = float(ticker['price'])
+			self.prices[c]['bid'] = float(ticker['bid'])
+			self.prices[c]['ask'] = float(ticker['ask'])
+			self.prices[c]['last'] = float(ticker['price'])

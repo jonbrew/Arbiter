@@ -19,7 +19,7 @@ class Bitfinex(Exchange):
 		for supported in Const.COINS :
 			for c in coins :
 				if c == supported.lower()+Const.BTC.lower():
-					self.prices[supported] = None
+					self.prices[supported] = {}
 
 	def update_prices(self):
 		for c in self.get_coins() :
@@ -29,4 +29,6 @@ class Bitfinex(Exchange):
 			else :
 				print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
 				return
-			self.prices[c] = float(ticker['ask'])
+			self.prices[c]['bid'] = float(ticker['bid'])
+			self.prices[c]['ask'] = float(ticker['ask'])
+			self.prices[c]['last'] = float(ticker['last_price'])

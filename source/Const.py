@@ -3,7 +3,6 @@ USDT	= 'USDT'
 BTC		= 'BTC'
 # Exchange Coins
 STEEM	= 'STEEM'
-DOGE	= 'DOGE'
 DASH	= 'DASH'
 QTUM	= 'QTUM'
 ETH		= 'ETH'
@@ -29,10 +28,14 @@ ADA		= 'ADA'
 VEN		= 'VEN'
 BTG		= 'BTG'
 LSK		= 'LSK'
+XLM		= 'XLM'
+NEO		= 'NEO'
+OAX		= 'OAX'
 SC		= 'SC'
-COINS = [STEEM, DOGE, DASH, QTUM, ETH, BCH, XRP, ETC, LTC, XMR, NXT, ZEC, 
+
+COINS = [STEEM, DASH, QTUM, ETH, BCH, XRP, ETC, LTC, XMR, NXT, ZEC, 
 		 BTS, REP, DGB, GNT, OMG, XEM, TRX, EOS, ICX, XVG, XLM, ADA, VEN, 
-		 BTG, LSK, SC]
+		 BTG, LSK, XLM, NEO, OAX, SC]
 # Console Colors
 HEADER = '\033[95m'
 OK = '\033[92m'
