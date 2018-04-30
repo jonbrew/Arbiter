@@ -30,7 +30,12 @@ class GateIO(Exchange):
 			return
 		for c in self.get_coins() :
 			pair = c.lower()+'_'+Const.BTC.lower()
-			self.prices[c]['bid'] = float(ticker[pair]['highestBid'])
-			self.prices[c]['ask'] = float(ticker[pair]['lowestAsk'])
-			self.prices[c]['last'] = float(ticker[pair]['last'])
-			
+			ticker = requests.get(self.api_base+'/api2/1/orderBook/'+pair)
+			if ticker.status_code is Const.SC_OK :
+				ticker = ticker.json()
+			else :
+				print(Const.BOLD+Const.FAIL+'Unable to reach '+self.name+' API'+Const.ENDC)
+				return
+			self.prices[c]['bid'] = float(ticker['bids'][0][0])
+			self.prices[c]['ask'] = float(ticker['asks'][-1][0])
+			self.prices[c]['last'] = float(ticker['bids'][0][0])
