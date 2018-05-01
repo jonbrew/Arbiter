@@ -6,5 +6,6 @@ import ccxt
 
 if __name__ == "__main__":
 	arbiter = Arbiter()
-	arbiter.calculate(True)
+	opps = arbiter.calculate()
+	arbiter.print_opportunities(opps)
 

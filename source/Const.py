@@ -21,7 +21,6 @@ OMG		= 'OMG'
 XEM		= 'XEM'
 TRX		= 'TRX'
 EOS		= 'EOS'
-ICX		= 'ICX'
 XVG		= 'XVG'
 XLM		= 'XLM'
 ADA		= 'ADA'
@@ -30,11 +29,10 @@ BTG		= 'BTG'
 LSK		= 'LSK'
 NEO		= 'NEO'
 OAX		= 'OAX'
-SC		= 'SC'
 
 COINS = [STEEM, DASH, QTUM, ETH, BCH, XRP, ETC, LTC, XMR, NXT, ZEC, 
-		 BTS, REP, DGB, GNT, OMG, XEM, TRX, EOS, ICX, XVG, XLM, ADA, VEN, 
-		 BTG, LSK, NEO, OAX, SC]
+		 BTS, REP, DGB, GNT, OMG, XEM, TRX, EOS, XVG, XLM, ADA, VEN, 
+		 BTG, LSK, NEO, OAX]
 # Console Colors
 HEADER = '\033[95m'
 OK = '\033[92m'
