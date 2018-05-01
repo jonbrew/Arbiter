@@ -8,9 +8,9 @@ class Arbiter():
 
 	def __init__(self):
 		self.exchanges = [Binance(), Bitfinex(), Bitstamp(), Bittrex(), CexIO(),
-						  GDAX(), GateIO(), HitBTC(), Poloniex()]
+						  GDAX(), GateIO(), HitBTC(), Kraken(), Poloniex()]
 		self.bot_exchanges = [Binance(), Bitfinex(), Bitstamp(), Bittrex(), 
-						      GDAX(), GateIO(), HitBTC(), Poloniex()]
+						      GDAX(), GateIO(), HitBTC(), Kraken(), Poloniex()]
 		print(Const.HEADER+'Building thread pool...'+Const.ENDC)
 		thread_pool = [Thread(target=e.update,name=e.name) for e in self.exchanges]
 		print(Const.HEADER+'Getting exchange price data...'+Const.ENDC)

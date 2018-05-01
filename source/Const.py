@@ -28,14 +28,13 @@ ADA		= 'ADA'
 VEN		= 'VEN'
 BTG		= 'BTG'
 LSK		= 'LSK'
-XLM		= 'XLM'
 NEO		= 'NEO'
 OAX		= 'OAX'
 SC		= 'SC'
 
 COINS = [STEEM, DASH, QTUM, ETH, BCH, XRP, ETC, LTC, XMR, NXT, ZEC, 
 		 BTS, REP, DGB, GNT, OMG, XEM, TRX, EOS, ICX, XVG, XLM, ADA, VEN, 
-		 BTG, LSK, XLM, NEO, OAX, SC]
+		 BTG, LSK, NEO, OAX, SC]
 # Console Colors
 HEADER = '\033[95m'
 OK = '\033[92m'
