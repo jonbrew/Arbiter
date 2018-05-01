@@ -20,6 +20,7 @@ class Bitfinex(Exchange):
 			for c in coins :
 				if c == supported.lower()+Const.BTC.lower():
 					self.prices[supported] = {}
+					break
 
 	def update_prices(self):
 		for c in self.get_coins() :

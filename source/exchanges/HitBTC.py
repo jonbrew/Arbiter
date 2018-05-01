@@ -24,6 +24,7 @@ class HitBTC(Exchange):
 			for c in coins :
 				if c['id'] == supported and c['payoutEnabled'] and c['payinEnabled']:
 					self.prices[supported] = {}
+					break
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api/2/public/ticker')

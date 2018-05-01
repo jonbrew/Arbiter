@@ -20,6 +20,7 @@ class Bitstamp(Exchange):
 			for c in coins :
 				if c['name'] == supported+'/'+Const.BTC and c['trading'] == 'Enabled':
 					self.prices[supported] = {}
+					break
 
 	def update_prices(self):
 		for c in self.get_coins() :

@@ -20,6 +20,7 @@ class CexIO(Exchange):
 			for c in coins['data'] :
 				if c['pair'] == supported+':'+Const.BTC :
 					self.prices[supported] = {}
+					break
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api/tickers/BTC')

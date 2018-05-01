@@ -20,6 +20,9 @@ class GateIO(Exchange):
 			for c in coins :
 				if c == supported.lower()+'_'+Const.BTC.lower() :
 					self.prices[supported] = {}
+					break
+		# Manually remove deposit/withdraw paused coins
+		self.prices.pop(Const.ADA)
 	
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api2/1/tickers')

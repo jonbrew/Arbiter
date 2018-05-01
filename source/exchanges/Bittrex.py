@@ -20,6 +20,7 @@ class Bittrex(Exchange):
 			for c in coins['result'] :
 				if c['Currency'] == supported and c['IsActive'] :
 					self.prices[supported] = {}
+					break
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api/v1.1/public/getmarketsummaries')
