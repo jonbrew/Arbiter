@@ -8,7 +8,7 @@ check: $(SOURCES) .pylintrc
 install:
 	( \
        source venv/bin/activate; \
-       sudo pip install -r requirements.txt; \
+       pip install -r requirements.txt; \
     )
 
 run:
