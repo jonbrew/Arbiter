@@ -65,7 +65,7 @@ pip install -r requirements.txt
 
 ## Running
  ```
- chmod+x source/RunArbiter.py
+ chmod +x source/RunArbiter.py
  make run
  ```
 
