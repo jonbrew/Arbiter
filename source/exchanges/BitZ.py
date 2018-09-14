@@ -21,8 +21,6 @@ class BitZ(Exchange):
 		for supported in Const.COINS :
 			if supported.lower()+'_'+Const.BTC.lower() in coins['data'] :
 				self.prices[supported] = {}
-		# Manually remove deposit/withdraw paused coins (cause their API sucks)
-		self.prices.pop(Const.BTG)
 
 	def update_prices(self):
 		ticker = requests.get(self.api_base+'/api_v1/tickerall', headers=self.headers)

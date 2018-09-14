@@ -1,4 +1,5 @@
 import sys
+import time
 import Const
 from exchanges import *
 from threading import Thread
@@ -7,22 +8,16 @@ from Utils import pct_inc
 class Arbiter():
 
 	def __init__(self):
-		self.exchanges = [Binance(), Bitfinex(), Bitstamp(), Bittrex(), CexIO(),
-						  GDAX(), GateIO(), HitBTC(), Kraken(), Kucoin(), Livecoin(), 
-						  Poloniex()]
-		self.bot_exchanges = [Binance(), Bitfinex(), Bitstamp(), Bittrex(), 
-						      GDAX(), GateIO(), HitBTC(), Kraken(), Kucoin(), 
-						      Livecoin(), Poloniex()]
-		print(Const.HEADER+'Building thread pool...'+Const.ENDC)
-		thread_pool = [Thread(target=e.update,name=e.name) for e in self.exchanges]
-		print(Const.HEADER+'Getting exchange price data...'+Const.ENDC)
+		self.exchanges = [Binance(), Bitstamp(), Bittrex(), 
+						  GDAX(), GateIO(), HitBTC(), Kraken(), 
+						  Livecoin(), Poloniex()]
+		thread_pool = [Thread(target=e.update,name=e.name) for e in self.exchanges]		
 		for t in thread_pool :
 			t.start()
 		for t in thread_pool :
 			t.join()
 
 	def calculate(self):
-		print(Const.HEADER+'Calculating arbitrage opportunities...'+Const.ENDC)
 		coin_opportunities = []
 		for c in Const.COINS :
 			supported_exchanges = [e for e in self.exchanges if c in e.prices and e.prices[c]]
@@ -57,7 +52,25 @@ class Arbiter():
 		coin = opportunities[0][0]
 		buy_exchange = opportunities[0][1][-1]
 		sell_exchange = opportunities[0][1][0]
-		percent = "{0:.2f}".format(pct_inc(buy_exchange.prices[c]['ask'],sell_exchange.prices[c]['bid']))
+		percent = "{0:.2f}".format(pct_inc(buy_exchange.prices[coin]['ask'],sell_exchange.prices[coin]['bid']))
 		print('Buy '+coin+' from '+buy_exchange.name+' at '+str(buy_exchange.prices[coin]['ask'])+
 			   '. Sell to '+sell_exchange.name+' at '+str(sell_exchange.prices[coin]['bid'])+' for '+Const.OK+percent+'%'+Const.ENDC)
 		print()
+	
+	def log_opportunities(self, opportunities) :
+		coin = opportunities[0][0]
+		buy_exchange = opportunities[0][1][-1]
+		sell_exchange = opportunities[0][1][0]
+		percent = "{0:.2f}".format(pct_inc(buy_exchange.prices[coin]['ask'],sell_exchange.prices[coin]['bid']))
+		log = open('../logs/log.txt','a+')
+		log.write(time.strftime('%a %H:%M:%S')+': Buy '+coin+' from '+buy_exchange.name+' at '+str(buy_exchange.prices[coin]['ask'])+
+			   '. Sell to '+sell_exchange.name+' at '+str(sell_exchange.prices[coin]['bid'])+' for '+percent+'%\n')
+		log.close()
+
+	def update_exchange_prices(self) :
+		for e in self.exchanges :
+			e.update_prices()
+
+	def update_exchanges(self) :
+		for e in self.exchanges :
+			e.update()
