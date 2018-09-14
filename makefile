@@ -1,9 +1,15 @@
-.DEFAULT_GOAL := run
+.DEFAULT_GOAL := install
 
 SOURCES := source/*.py source/exchanges/*.py
 
 check: $(SOURCES) .pylintrc
 	-pylint --disable=R,C $(SOURCES)
+
+install:
+	( \
+       source venv/bin/activate; \
+       pip install -r requirements.txt; \
+    )
 
 run:
 	cd source/; ./RunArbiter.py
